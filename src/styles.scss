@@ -1,1 +1,46 @@
+@import "bootstrap/scss/bootstrap";
 /* You can add global styles to this file, and also import other style files */
+html, body, app-root {
+  margin: 0;
+  height: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #2e2e2e, #000000);
+  background-attachment: fixed; /* ensures it stays full-page */
+}
+
+$primary-color: #ffffff;   // white
+$secondary-color: #000000; // black
+$tertiary-color: #16b776;  // dark neon (BCG style)
+
+// Utility classes
+.primary-txt {
+  color: $primary-color !important;
+}
+
+.secondary-txt {
+  color: $secondary-color !important;
+}
+
+.tertiary-txt {
+  color: $tertiary-color !important;
+}
+
+// Standard dark neon button
+.btn-dark-neon {
+  background-color: $tertiary-color;  
+  color: #000;
+  border: none;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($tertiary-color, 10%);
+    color: #000;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px $tertiary-color;
+  }
+}
