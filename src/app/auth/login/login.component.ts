@@ -14,17 +14,14 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // Called when user submits the login form
   login(): void {
     this.error = ''; // Reset error
-
-    this.authService.login(this.email, this.password).subscribe({
+    const username = this.email.split('@')[0];
+    this.authService.login(username, this.password).subscribe({
       next: (res) => {
-        // Login successful, navigate to dashboard
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        // Login failed
         this.error = 'Invalid email or password';
         console.error(err);
       }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'] // create an empty CSS file or remove this line
+  styleUrls: ['./dashboard.component.scss'] 
 })
 export class DashboardComponent {
   constructor(private authService: AuthService, private router: Router) {}
