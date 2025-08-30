@@ -10,8 +10,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:8000';
   private loggedIn = new BehaviorSubject<boolean>(!!this.getToken());
   isLoggedIn$ = this.loggedIn.asObservable();
-  private userName = new BehaviorSubject<string>('');
-  userName$ = this.userName.asObservable();
+ 
 
   constructor(private http: HttpClient) {}
 
@@ -20,8 +19,8 @@ export class AuthService {
       tap(res => {
         localStorage.setItem('access_token', res.access);
         localStorage.setItem('refresh_token', res.refresh);
+        localStorage.setItem('username',username)
         this.loggedIn.next(true);
-        this.userName.next(username);
       })
     );
   }
@@ -35,7 +34,6 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.loggedIn.next(false);
-    this.userName.next('');
   }
 
   getToken(): string | null {
