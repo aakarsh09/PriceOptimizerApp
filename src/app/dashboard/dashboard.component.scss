@@ -1,0 +1,11 @@
+.tile{
+    width: 20rem;
+    height: 22rem;
+    cursor: pointer;
+}
+
+.tile-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
