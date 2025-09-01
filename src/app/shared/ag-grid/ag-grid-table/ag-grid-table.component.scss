@@ -1,0 +1,9 @@
+.table-container {
+  max-width: 100%;
+  margin: 5px auto;
+  padding: 0 10px;
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}

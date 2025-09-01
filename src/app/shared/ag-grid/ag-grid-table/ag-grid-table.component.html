@@ -1,13 +1,15 @@
-<ag-grid-angular
-  class="ag-theme-quartz"
-  style="width: 100%; height: 100%;"
-  [rowData]="rowData"
-  [columnDefs]="columnDefs"
-  [gridOptions]="gridOptions"
-  [rowSelection]="rowSelection"
-  [domLayout]="'normal'"
-  (rowClicked)="onRowClicked($event)"
-  (cellClicked)="onCellClicked($event)"
-  [rowHeight]="50"
->
-</ag-grid-angular>
+<div class="table-container">
+  <ag-grid-angular
+    class="ag-theme-quartz"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [gridOptions]="gridOptions"
+    [rowSelection]="rowSelection"
+    [domLayout]="'normal'"
+    (rowClicked)="onRowClicked($event)"
+    (cellClicked)="onCellClicked($event)"
+    [rowHeight]="50"
+  >
+  </ag-grid-angular>
+</div>
+

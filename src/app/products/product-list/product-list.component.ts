@@ -36,13 +36,22 @@ export class ProductListComponent implements OnInit {
         };
 
         // Map columns and assign widths and styles
-        const enhancedColumns = data.columns.map(col => ({
-          ...col,
-          width: customWidths[col.field] ?? 120,
-          wrapText: true,
-          autoHeight: true,
-          cellClass: 'left-align'
-        }));
+        const enhancedColumns = data.columns.map(col => {
+          let flexValue = 1; // default flex value
+
+          if (['description'].includes(col.field)) flexValue = 3;  // wider column
+          else if (['name'].includes(col.field)) flexValue = 2;     // medium width
+          else if (['category'].includes(col.field)) flexValue = 1.5; // a bit wider than default
+
+          return {
+            ...col,
+            flex: flexValue,
+            wrapText: true,
+            autoHeight: true,
+            cellClass: 'left-align'
+          };
+        });
+
 
         // Prepend the checkbox column here
         this.columnDefs = [this.checkboxColumn, ...enhancedColumns];

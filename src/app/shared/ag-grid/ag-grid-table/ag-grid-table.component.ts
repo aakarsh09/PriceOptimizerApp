@@ -17,11 +17,15 @@ export class AgGridTableComponent {
   @Output() cellClicked = new EventEmitter<any>();
 
   defaultColDef: ColDef = {
-    sortable: true,
-    filter: true,
-    resizable: true,
-    minWidth: 100
-  };
+  sortable: true,
+  filter: true,
+  resizable: true,
+  flex: 1,
+  minWidth: 80,
+  wrapText: true,
+  autoHeight: true
+};
+
 
   onRowClicked(event: any) {
     this.rowClicked.emit(event);
