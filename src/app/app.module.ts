@@ -8,6 +8,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { AgGridModule } from './shared/ag-grid/ag-grid.module';
+import { ProductsModule } from './products/products.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AgGridModule, 
+    ProductsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductFormComponent } from './product-form/product-form.component';
-
+import { AgGridModule } from '../shared/ag-grid/ag-grid.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,8 @@ import { ProductFormComponent } from './product-form/product-form.component';
   ],
   imports: [
     CommonModule,
-    ProductsRoutingModule
+    ProductsRoutingModule,
+    AgGridModule,
   ]
 })
 export class ProductsModule { }
