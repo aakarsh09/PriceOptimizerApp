@@ -12,7 +12,8 @@ html, body, app-root {
 
 $primary-color: #ffffff;   // white
 $secondary-color: #000000; // black
-$tertiary-color: #16b776;  // dark neon (BCG style)
+// $tertiary-color: #16b776;  
+$tertiary-color: #00f7c2;  //(BCG style)
 
 // Utility classes
 .primary-txt {
@@ -29,21 +30,21 @@ $tertiary-color: #16b776;  // dark neon (BCG style)
 
 // Standard dark neon button
 .btn-dark-neon {
-  background-color: $tertiary-color;  
-  color: #000;
-  border: none;
-  font-weight: bold;
-  transition: 0.3s;
-  cursor: pointer;
+  background-color: $tertiary-color !important;  
+  color: #000 !important;
+  border: none !important;
+  font-weight: bold !important;
+  transition: 0.3s !important;
+  cursor: pointer !important;
 
   &:hover {
-    background-color: lighten($tertiary-color, 10%);
-    color: #000;
+    background-color: lighten($tertiary-color, 10%) !important;
+    color: #000 !important;
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 5px $tertiary-color;
+    box-shadow: 0 0 5px $tertiary-color !important;
   }
 }
 
@@ -53,12 +54,20 @@ $tertiary-color: #16b776;  // dark neon (BCG style)
 }
 
 .ag-theme-quartz .ag-header {
-  background-color: black;
-  color: white;
+  background-color: #000;
+  color: #ffffff;
 }
 
 .ag-theme-quartz .ag-header-cell-label {
-  color: white;
+  color: #ffffff;
+}
+
+.ag-theme-quartz .ag-header-cell{
+  border-right: 1px solid #333333;
+}
+
+.ag-theme-quartz .ag-header-cell-last-right {
+  border-right: none;
 }
 
 .ag-theme-quartz .ag-row:nth-child(even) {
@@ -85,3 +94,8 @@ $tertiary-color: #16b776;  // dark neon (BCG style)
   border-right: none;
 }
 
+  .neon-border{
+    background-color: transparent;
+    border: 1px solid #00f7c2 !important;
+    color: #ffffff;
+  }

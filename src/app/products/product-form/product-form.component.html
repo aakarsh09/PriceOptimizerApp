@@ -1,1 +1,28 @@
-<p>product-form works!</p>
+<form [formGroup]="productForm" (ngSubmit)="submit()">
+  <!-- Add your form controls -->
+  <label>Product Name</label>
+  <input formControlName="name" />
+
+  <label>Category</label>
+  <input formControlName="category" />
+
+  <label>Cost Price</label>
+  <input type="number" formControlName="cost_price" />
+
+  <label>Selling Price</label>
+  <input type="number" formControlName="selling_price" />
+
+  <label>Description</label>
+  <textarea formControlName="description"></textarea>
+
+  <label>Available Stock</label>
+  <input type="number" formControlName="stock_available" />
+
+  <label>Units Sold</label>
+  <input type="number" formControlName="units_sold" />
+
+  <div class="form-actions">
+    <button type="submit">Add</button>
+    <button type="button" (click)="cancelForm()">Cancel</button>
+  </div>
+</form>
