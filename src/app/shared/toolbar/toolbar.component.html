@@ -1,17 +1,5 @@
-<nav class="navbar p-3">
-  <div class="container-fluid d-flex justify-content-between align-items-center tertiary-txt">
-    <span class="fw-bold">Price Optimization Tool</span>
 
-    <div *ngIf="isLoggedIn" class="fw-bold">
-      Welcome, {{ userName }}
-      <span class="rounded-circle bg-white d-inline-flex justify-content-center align-items-center" style="width: 20px; height: 20px;">
-        <i class="bi bi-person-fill text-dark fs-5"></i>
-      </span>
-    </div>
-  </div>
-</nav>
-<!-- 
-<div *ngIf="true" class="product-header">
+<div *ngIf="showToolBar" class="product-header">
   <button class="back-btn">
     <span class="icon">&laquo;</span> <span class="text">Back</span>
   </button>
@@ -37,4 +25,4 @@
 
   <button class="btn-dark-neon">Add New Products</button>
   <button class="btn-dark-neon">Demand Forecast</button>
-</div> -->
+</div>

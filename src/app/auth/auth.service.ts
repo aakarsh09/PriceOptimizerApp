@@ -8,39 +8,51 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000';
-  private loggedIn = new BehaviorSubject<boolean>(!!this.getToken());
-  isLoggedIn$ = this.loggedIn.asObservable();
- 
 
-  constructor(private http: HttpClient) {}
+  private loggedIn = new BehaviorSubject<boolean>(this.hasValidToken());
+  isLoggedIn$ = this.loggedIn.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.updateLoginStatus();
+  }
 
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/accounts/api/token/`, { username, password }).pipe(
       tap(res => {
-        localStorage.setItem('access_token', res.access);
-        localStorage.setItem('refresh_token', res.refresh);
-        localStorage.setItem('username',username)
+        sessionStorage.setItem('access_token', res.access);
+        sessionStorage.setItem('refresh_token', res.refresh);
+        sessionStorage.setItem('username', username);
         this.loggedIn.next(true);
       })
     );
   }
 
-  // Accept payload with username, email, password
   register(payload: { username: string; email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/accounts/register/`, payload);
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('username');
     this.loggedIn.next(false);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return sessionStorage.getItem('access_token');
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return this.loggedIn.value;
+  }
+
+  updateLoginStatus() {
+    const hasToken = this.hasValidToken();
+    this.loggedIn.next(hasToken);
+  }
+
+  private hasValidToken(): boolean {
+    const token = this.getToken();
+    return !!token;
   }
 }

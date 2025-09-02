@@ -36,6 +36,8 @@ $tertiary-color: #00f7c2;  //(BCG style)
   font-weight: bold !important;
   transition: 0.3s !important;
   cursor: pointer !important;
+  border-radius: 3px;
+  padding: 5px;
 
   &:hover {
     background-color: lighten($tertiary-color, 10%) !important;

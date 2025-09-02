@@ -10,6 +10,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { AgGridModule } from './shared/ag-grid/ag-grid.module';
 import { ProductsModule } from './products/products.module';
+import { LogoutComponent } from './auth/logout/logout.component';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { ProductsModule } from './products/products.module';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

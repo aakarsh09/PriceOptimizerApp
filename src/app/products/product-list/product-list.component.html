@@ -1,5 +1,18 @@
+<app-toolbar
+[showToolBar]=true
+></app-toolbar>
 <app-ag-grid-table
   [columnDefs]="columnDefs"
   [rowData]="rowData"
   (rowClicked)="handleRowClick($event)">
 </app-ag-grid-table>
+
+<div class="d-flex align-items-center justify-content-end" style="font-size: 12px;">
+    <button class="btn-dark-neon m-2 px-2">
+        cancel
+    </button>
+    <button  class="btn-dark-neon m-2 px-2">
+        save
+    </button>
+
+</div>
