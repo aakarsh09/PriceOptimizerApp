@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../products.service';
 import { ColDef } from 'ag-grid-community';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductFormComponent } from '../product-form/product-form.component';
 
 @Component({
   selector: 'app-product-list',
@@ -24,9 +26,17 @@ export class ProductListComponent implements OnInit {
     suppressMenu: true,
   };
 
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
+      this.loadProducts();
+  }
+
+
+  loadProducts(){
     this.productService.getProducts().subscribe({
       next: (data) => {
         const customWidths: { [key: string]: number } = {
@@ -37,12 +47,11 @@ export class ProductListComponent implements OnInit {
 
         // Map columns and assign widths and styles
         const enhancedColumns = data.columns.map(col => {
-          let flexValue = 1; // default flex value
+          let flexValue = 1;
 
-          if (['description'].includes(col.field)) flexValue = 3;  // wider column
-          else if (['name'].includes(col.field)) flexValue = 2;     // medium width
-          else if (['category'].includes(col.field)) flexValue = 1.5; // a bit wider than default
-
+          if (['description'].includes(col.field)) flexValue = 3;
+          else if (['name'].includes(col.field)) flexValue = 2;
+          else if (['category'].includes(col.field)) flexValue = 1.5;
           return {
             ...col,
             flex: flexValue,
@@ -51,14 +60,23 @@ export class ProductListComponent implements OnInit {
             cellClass: 'left-align'
           };
         });
-
-
-        // Prepend the checkbox column here
+        
+        // checkbox column addedhere
         this.columnDefs = [this.checkboxColumn, ...enhancedColumns];
         this.rowData = data.rows;
       },
       error: (err) => console.error('Error loading products:', err)
     });
+  }
+
+  openAddProductForm(event:any) {
+    if(event == true)
+    {
+      const dialogRef = this.dialog.open(ProductFormComponent, {
+        width: '600px',
+        disableClose: true,
+      });
+    }
   }
 
   handleRowClick(event: any) {

@@ -1,25 +1,74 @@
-.modal-backdrop {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+:host {
+  display: block;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  min-width: 400px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
 }
 
-.form-actions {
-  margin-top: 20px;
+.custom-input,
+.custom-textarea {
+  width: 100%;
+  background-color: #2b2b2b;
+  border-radius: 4px;
+  border: none;
+  color: #c1c1c1;
+  padding: 8px 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.custom-input::placeholder,
+.custom-textarea::placeholder {
+  color: #6a6a6a;
+}
+
+.flex-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+}
+
+.flex-1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.dialog-actions {
+  display: flex;
   justify-content: flex-end;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.cancel-btn {
+  color: #ffffff !important;
+  background-color: transparent;
+  border: 1px solid #9a9a9a;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.cancel-btn:hover {
+  background-color: #3a3a3a;
+}
+
+.add-btn:disabled {
+  background-color: #3ad29f80;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.title{
+    background: transparent;
+}
+
+.close-btn{
+    background: transparent;
+    border: none;
 }

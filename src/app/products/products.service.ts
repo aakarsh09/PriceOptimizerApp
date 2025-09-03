@@ -13,11 +13,11 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<ProductApiResponse> {
-    return this.http.get<ProductApiResponse>(this.apiUrl);
+    return this.http.get<ProductApiResponse>(this.apiUrl+'view');
   }
 
   addProduct(productData: any): Observable<any> {
-    return this.http.post('products/add', productData);
+    return this.http.post<any>(this.apiUrl + 'add/', productData);
   }
 
 }

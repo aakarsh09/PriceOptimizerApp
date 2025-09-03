@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,4 +8,11 @@ import { Component, Input } from '@angular/core';
 })
 export class ToolbarComponent {
   @Input() showToolBar:Boolean = false;
+  @Output() isAddProducts = new EventEmitter<boolean>();
+
+  addProductsEmitter()
+  {
+    console.log("-asdfffff")
+    this.isAddProducts.emit(true);
+  }
 }

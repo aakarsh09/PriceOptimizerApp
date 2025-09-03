@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';  // <-- Add this
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +11,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { AgGridModule } from './shared/ag-grid/ag-grid.module';
 import { ProductsModule } from './products/products.module';
 import { LogoutComponent } from './auth/logout/logout.component';
-import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
     HttpClientModule,
     AgGridModule, 
     ProductsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
