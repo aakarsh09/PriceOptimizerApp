@@ -14,6 +14,7 @@ export class ProductListComponent implements OnInit {
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
   uniqueCategories:string[]=[];
+  filteredRowData: any[] = [];
 
   checkboxColumn: ColDef = {
     headerName: '',
@@ -65,6 +66,7 @@ export class ProductListComponent implements OnInit {
         // checkbox column addedhere
         this.columnDefs = [this.checkboxColumn, ...enhancedColumns];
         this.rowData = data.rows;
+        this.filteredRowData = data.rows;
 
         const allCategories = data.rows.map(row => row.category);
         this.uniqueCategories = [...new Set(allCategories)];
@@ -80,6 +82,14 @@ export class ProductListComponent implements OnInit {
         width: '600px',
         disableClose: true,
       });
+    }
+  }
+
+  onCategoryChanged(category:any) {
+    if (!category || category=="select a category") {
+      this.filteredRowData = this.rowData;
+    } else{
+      this.filteredRowData = this.rowData.filter(p => p.category === category);
     }
   }
 

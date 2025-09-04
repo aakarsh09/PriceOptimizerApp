@@ -2,11 +2,12 @@
     [showToolBar]=true
     (isAddProducts)="openAddProductForm($event)"
     [categoryOptions]="uniqueCategories"
+    (categoryChanged)="onCategoryChanged($event)"
 ></app-toolbar>
 
 <app-ag-grid-table
     [columnDefs]="columnDefs"
-    [rowData]="rowData"
+    [rowData]="filteredRowData"
     (rowClicked)="handleRowClick($event)">
 </app-ag-grid-table>
 

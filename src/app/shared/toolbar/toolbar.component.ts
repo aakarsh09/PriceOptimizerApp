@@ -1,5 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,14 +6,22 @@ import { FormControl } from '@angular/forms';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent {
-  @Input() showToolBar:Boolean = false;
-  @Output() isAddProducts = new EventEmitter<boolean>();
-  categoryControl = new FormControl('');
-  @Input() categoryOptions:string[] = [];
+export class ToolbarComponent implements OnInit {
+  @Input() showToolBar: boolean = false;
+  @Input() categoryOptions: string[] = [];
 
-  addProductsEmitter()
-  {
+  @Output() isAddProducts = new EventEmitter<boolean>();
+  @Output() categoryChanged = new EventEmitter<string | undefined>();
+
+  categoryControl: FormControl = new FormControl('');
+
+  ngOnInit() {
+    this.categoryControl.valueChanges.subscribe((value: string | null) => {
+      this.categoryChanged.emit(value ?? undefined);
+    });
+  }
+
+  addProductsEmitter() {
     this.isAddProducts.emit(true);
   }
 }

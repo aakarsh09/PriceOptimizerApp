@@ -18,7 +18,7 @@
 
   <label>Category :</label>
   <select class="neon-select px-2" [formControl]="categoryControl">
-    <option value="" disabled selected hidden>Select a category</option> 
+    <option value=""  selected >Select a category</option> 
     <option *ngFor="let option of categoryOptions" [value]="option">{{ option }}</option>
   </select>
 
