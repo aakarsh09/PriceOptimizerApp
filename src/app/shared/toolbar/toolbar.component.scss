@@ -85,4 +85,20 @@ input,select{
     }
   }
 }
+
+.neon-select {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #00f7c2;
+  border-radius: 4px;
+  appearance: none;
+  outline: none;
+  font-size: 12px;
+  transition: 0.3s ease;
+}
+
+.neon-select option {
+  background-color: #000;
+}
+
 }

@@ -99,6 +99,8 @@ $gray-color:  #333333;
   background-color: transparent;
   border: 1px solid $tertiary-color !important;
   color: #ffffff;
+  outline: none;
+  padding: 10px;
 }
 
 .ag-theme-quartz .ag-header-cell-resize::after {

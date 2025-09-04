@@ -1,5 +1,6 @@
 import { Component, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,10 +10,11 @@ import { EventEmitter } from '@angular/core';
 export class ToolbarComponent {
   @Input() showToolBar:Boolean = false;
   @Output() isAddProducts = new EventEmitter<boolean>();
+  categoryControl = new FormControl('');
+  @Input() categoryOptions:string[] = [];
 
   addProductsEmitter()
   {
-    console.log("-asdfffff")
     this.isAddProducts.emit(true);
   }
 }

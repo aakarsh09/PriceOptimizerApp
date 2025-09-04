@@ -14,13 +14,15 @@
     <span>With Demand Forecast</span>
   </div>
 
-  <input type="text" placeholder="Search" class="neon-border pr-5" />
+  <input type="text" placeholder="Search" class="neon-border pr-3" />
 
   <label>Category :</label>
-  <select class="neon-border">
-    <option value="Stationary">Stationary</option>
-    <option value="Electronics">Electronics</option>
+  <select class="neon-select px-2" [formControl]="categoryControl">
+    <option value="" disabled selected hidden>Select a category</option> 
+    <option *ngFor="let option of categoryOptions" [value]="option">{{ option }}</option>
   </select>
+
+
   <button class="btn-dark-neon">Filter</button>
 
   <button class="btn-dark-neon" (click)="addProductsEmitter()">Add New Products</button>

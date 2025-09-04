@@ -12,6 +12,7 @@ import { AgGridModule } from './shared/ag-grid/ag-grid.module';
 import { ProductsModule } from './products/products.module';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    NavbarComponent,
+    // NavbarComponent,
     LogoutComponent,
   ],
   imports: [
@@ -30,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     AgGridModule, 
     ProductsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

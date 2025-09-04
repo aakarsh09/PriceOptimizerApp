@@ -1,6 +1,7 @@
 <app-toolbar
     [showToolBar]=true
     (isAddProducts)="openAddProductForm($event)"
+    [categoryOptions]="uniqueCategories"
 ></app-toolbar>
 
 <app-ag-grid-table

@@ -13,6 +13,7 @@ export class ProductListComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
   rowData: any[] = [];
+  uniqueCategories:string[]=[];
 
   checkboxColumn: ColDef = {
     headerName: '',
@@ -64,6 +65,9 @@ export class ProductListComponent implements OnInit {
         // checkbox column addedhere
         this.columnDefs = [this.checkboxColumn, ...enhancedColumns];
         this.rowData = data.rows;
+
+        const allCategories = data.rows.map(row => row.category);
+        this.uniqueCategories = [...new Set(allCategories)];
       },
       error: (err) => console.error('Error loading products:', err)
     });
