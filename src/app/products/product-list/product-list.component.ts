@@ -3,11 +3,13 @@ import { ProductsService } from '../products.service';
 import { ColDef } from 'ag-grid-community';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
+  providers: [CurrencyPipe]
 })
 export class ProductListComponent implements OnInit {
 
@@ -31,76 +33,82 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private currencyPipe: CurrencyPipe,
   ) {}
 
   ngOnInit(): void {
       this.loadProducts();
   }
 
-
-  loadProducts(search: string = ''){
+  loadProducts(search: string = '') {
     this.productService.getProducts(search).subscribe({
-      next: (data) => {
-        const customWidths: { [key: string]: number } = {
-          description: 300,
-          name: 200,
-          category: 180
-        };
-
-        // Map columns and assign widths and styles
-        const enhancedColumns = data.columns.map(col => {
-          if (col.field === 'id') {
-            return {
-              ...col,
-              hide: true
-            };
-          }
-
-          let flexValue = 1;
-
-          if (['description'].includes(col.field)) flexValue = 3;
-          else if (['name'].includes(col.field)) flexValue = 2;
-          else if (['category'].includes(col.field)) flexValue = 1.5;
-
-          return {
-            ...col,
-            flex: flexValue,
-            wrapText: true,
-            autoHeight: true,
-            cellClass: 'left-align'
-          };
-        });
-
-        const actionsColumn: ColDef = {
-          headerName: 'Actions',
-          field: 'actions',
-          width: 120,
-          pinned: 'right',
-          editable: false,
-          cellRenderer: () => {
-          return `
-            <span class="action-icons" style="cursor:pointer; display:flex; gap:12px; justify-content:center; align-items:center;">
-              <i class="fas fa-edit edit-icon" title="Edit"></i>
-              <i class="fas fa-trash delete-icon" title="Delete"></i>
-              <i class="fas fa-eye view-icon" title="View"></i>
-            </span>
-          `;
-        },
-            onCellClicked: (event) => this.handleActionClick(event)
-        };
-        
-        // checkbox column addedhere
-        this.columnDefs = [this.checkboxColumn, actionsColumn,...enhancedColumns];
-        this.rowData = data.rows;
-        this.filteredRowData = data.rows;
-
-        const allCategories = data.rows.map(row => row.category);
-        this.uniqueCategories = [...new Set(allCategories)];
-      },
+      next: (data) => this.handleProductData(data),
       error: (err) => console.error('Error loading products:', err)
     });
   }
+
+  private handleProductData(data: any) {
+    const enhancedColumns = this.createColumns(data.columns);
+    const actionsColumn: ColDef = this.createActionsColumn();
+
+    this.columnDefs = [this.checkboxColumn, actionsColumn, ...enhancedColumns];
+    this.rowData = this.formatCurrencyFields(data.rows);
+    this.filteredRowData = this.rowData;
+
+    const allCategories = (data.rows as any[]).map(row => row.category as string);
+    this.uniqueCategories = [...new Set(allCategories)];
+  }
+
+  private createColumns(columns: any[]): ColDef[] {
+    return columns.map(col => {
+      if (col.field === 'id') {
+        return { ...col, hide: true };
+      }
+
+      let flexValue = 1;
+      if (col.field === 'description') flexValue = 3;
+      else if (col.field === 'name') flexValue = 2;
+      else if (col.field === 'category') flexValue = 1.5;
+
+      return {
+        ...col,
+        flex: flexValue,
+        wrapText: true,
+        autoHeight: true,
+        cellClass: 'left-align'
+      };
+    });
+  }
+
+  private createActionsColumn(): ColDef {
+    return {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 120,
+      pinned: 'right',
+      editable: false,
+      cellRenderer: () => `
+        <span class="action-icons" style="cursor:pointer; display:flex; gap:12px; justify-content:center; align-items:center;">
+          <i class="fas fa-edit edit-icon" title="Edit"></i>
+          <i class="fas fa-trash delete-icon" title="Delete"></i>
+          <i class="fas fa-eye view-icon" title="View"></i>
+        </span>
+      `,
+      onCellClicked: (event) => this.handleActionClick(event)
+    };
+  }
+
+  private formatCurrencyFields(rows: any[]): any[] {
+    return rows.map(row => ({
+      ...row,
+      cost_price: this.currencyPipe.transform(row.cost_price, 'USD', 'symbol', '1.2-2'),
+      selling_price: this.currencyPipe.transform(row.selling_price, 'USD', 'symbol', '1.2-2'),
+      optimized_price: this.currencyPipe.transform(row.optimized_price, 'USD', 'symbol', '1.2-2'),
+    }));
+  }
+
+  
 
   openAddProductForm(event:any) {
     if(event == true)
