@@ -1,6 +1,6 @@
 
 <div *ngIf="showToolBar" class="product-header">
-  <button class="back-btn">
+  <button class="back-btn" (click)="onback()">
     <span class="icon">&laquo;</span> <span class="text">Back</span>
   </button>
 
@@ -14,7 +14,7 @@
     <span>With Demand Forecast</span>
   </div>
 
-  <input type="text" placeholder="Search" class="neon-border pr-3" />
+  <input type="text"[(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Search" class="neon-border pr-3"/>
 
   <label>Category :</label>
   <select class="neon-select px-2" [formControl]="categoryControl">

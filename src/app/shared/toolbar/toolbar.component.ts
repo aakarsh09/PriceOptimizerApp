@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -12,9 +13,12 @@ export class ToolbarComponent implements OnInit {
 
   @Output() isAddProducts = new EventEmitter<boolean>();
   @Output() categoryChanged = new EventEmitter<string | undefined>();
+  @Output() searchValue = new EventEmitter<string>();
+  searchTerm:string = "";
 
   categoryControl: FormControl = new FormControl('');
 
+  constructor(private router: Router){}
   ngOnInit() {
     this.categoryControl.valueChanges.subscribe((value: string | null) => {
       this.categoryChanged.emit(value ?? undefined);
@@ -23,5 +27,15 @@ export class ToolbarComponent implements OnInit {
 
   addProductsEmitter() {
     this.isAddProducts.emit(true);
+  }
+
+  onSearch()
+  {
+    this.searchValue.emit(this.searchTerm);
+  }
+  onback()
+  {
+    console.log("backcalled")
+    this.router.navigate(['/dashboard']);
   }
 }

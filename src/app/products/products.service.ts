@@ -12,8 +12,13 @@ export class ProductsService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<ProductApiResponse> {
-    return this.http.get<ProductApiResponse>(this.apiUrl);
+  getProducts(searchTerm: string = ''): Observable<ProductApiResponse> {
+    let params = {};
+    if (searchTerm && searchTerm.trim() !== '') {
+      params = { search: searchTerm.trim() };
+    }
+    console.log(params)
+    return this.http.get<ProductApiResponse>(this.apiUrl + '', { params });
   }
 
   addProduct(productData: any): Observable<any> {

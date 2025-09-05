@@ -39,7 +39,6 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-  // This handles both add and update depending on mode
   submit(): void {
     if (this.productForm.invalid) return;
 

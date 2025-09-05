@@ -3,6 +3,7 @@
     (isAddProducts)="openAddProductForm($event)"
     [categoryOptions]="uniqueCategories"
     (categoryChanged)="onCategoryChanged($event)"
+    (searchValue)="onSearch($event)"
 ></app-toolbar>
 
 <app-ag-grid-table

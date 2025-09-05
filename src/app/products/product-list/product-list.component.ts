@@ -39,8 +39,8 @@ export class ProductListComponent implements OnInit {
   }
 
 
-  loadProducts(){
-    this.productService.getProducts().subscribe({
+  loadProducts(search: string = ''){
+    this.productService.getProducts(search).subscribe({
       next: (data) => {
         const customWidths: { [key: string]: number } = {
           description: 300,
@@ -109,6 +109,10 @@ export class ProductListComponent implements OnInit {
         width: '600px',
         disableClose: true,
       });
+      dialogRef.afterClosed().subscribe((result) => {
+      this.isEditMode = false;
+      if (result) this.loadProducts();
+    });
     }
   }
 
@@ -166,5 +170,12 @@ export class ProductListComponent implements OnInit {
       this.deleteProduct(event.data.id, event);
     }
   }
+
+  onSearch(value:string)
+  {
+    this.loadProducts(value);
+  }
+
+  
 
 }

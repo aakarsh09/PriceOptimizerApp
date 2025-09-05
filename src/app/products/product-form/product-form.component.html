@@ -44,6 +44,6 @@
   <div mat-dialog-actions align="end" class="dialog-actions">
     <button  type="button" (click)="cancelForm()" class="cancel-btn px-3">Cancel</button>
     <button *ngIf="!isEditMode" type="submit"  [disabled]="!productForm.valid" class="btn-dark-neon px-3">Add</button>
-    <button *ngIf="isEditMode" type="button" [disabled]="!productForm.valid" class="btn-dark-neon px-3"> Update </button>  
+    <button *ngIf="isEditMode" type="submit" [disabled]="!productForm.valid" class="btn-dark-neon px-3"> Update </button>  
   </div>
 </form>
