@@ -17,7 +17,6 @@ export class ProductsService {
     if (searchTerm && searchTerm.trim() !== '') {
       params = { search: searchTerm.trim() };
     }
-    console.log(params)
     return this.http.get<ProductApiResponse>(this.apiUrl + '', { params });
   }
 

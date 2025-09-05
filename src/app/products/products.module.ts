@@ -5,12 +5,9 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductFormComponent } from './product-form/product-form.component';
 import { AgGridModule } from '../shared/ag-grid/ag-grid.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from '../shared/shared.module';
+import { ForecastModule } from '../forecast/forecast.module';
 
 @NgModule({
   declarations: [
@@ -21,13 +18,9 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     ProductsRoutingModule,
     AgGridModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    SharedModule
+    SharedModule,
+    ForecastModule
   ]
 })
 export class ProductsModule { }

@@ -32,10 +32,10 @@ export class AuthService {
   }
 
   logout(): void {
+    this.loggedIn.next(false);
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('username');
-    this.loggedIn.next(false);
   }
 
   getToken(): string | null {

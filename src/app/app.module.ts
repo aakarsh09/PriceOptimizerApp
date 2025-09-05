@@ -32,7 +32,7 @@ import { SharedModule } from './shared/shared.module';
     AgGridModule, 
     ProductsModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

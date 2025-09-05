@@ -14,6 +14,8 @@ export class ToolbarComponent implements OnInit {
   @Output() isAddProducts = new EventEmitter<boolean>();
   @Output() categoryChanged = new EventEmitter<string | undefined>();
   @Output() searchValue = new EventEmitter<string>();
+  @Output() isDemandForecast = new EventEmitter<boolean>();
+
   searchTerm:string = "";
 
   categoryControl: FormControl = new FormControl('');
@@ -35,7 +37,10 @@ export class ToolbarComponent implements OnInit {
   }
   onback()
   {
-    console.log("backcalled")
     this.router.navigate(['/dashboard']);
+  }
+  onDemandForecast()
+  {
+   this.isDemandForecast.emit(true);
   }
 }

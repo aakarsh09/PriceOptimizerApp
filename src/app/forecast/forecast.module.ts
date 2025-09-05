@@ -3,15 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { ForecastRoutingModule } from './forecast-routing.module';
 import { DemandChartComponent } from './demand-chart/demand-chart.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
   declarations: [
-    DemandChartComponent
+    DemandChartComponent,
   ],
   imports: [
     CommonModule,
-    ForecastRoutingModule
+    ForecastRoutingModule,
+    NgChartsModule,
   ]
 })
 export class ForecastModule { }

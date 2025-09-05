@@ -6,8 +6,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -20,12 +20,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    FormsModule
-
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule,
   ],
-  exports:[
+  exports: [
     ToolbarComponent,
-    NavbarComponent
+    NavbarComponent,
+    MatOptionModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule,
   ]
 })
 export class SharedModule { }

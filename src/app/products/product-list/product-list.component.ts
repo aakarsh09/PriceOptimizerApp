@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { CurrencyPipe } from '@angular/common';
+import { DemandChartComponent } from 'src/app/forecast/demand-chart/demand-chart.component';
 
 @Component({
   selector: 'app-product-list',
@@ -167,7 +168,6 @@ export class ProductListComponent implements OnInit {
 
     
   handleActionClick(event: any): void {
-    console.log(event);
     const target = event.event.target as HTMLElement;
 
     if (target.classList.contains('edit-icon')) {
@@ -184,6 +184,31 @@ export class ProductListComponent implements OnInit {
     this.loadProducts(value);
   }
 
-  
+  onDemandForecast(value:boolean)
+  {
+    if(value)
+    {
+      this.openDemandChart();
+      // this.productService.demandForecast();
+    }
+  }
 
+  openDemandChart()
+  {
+      const dialog = this.dialog.open(DemandChartComponent, {
+      width: '80%',
+      data: {
+        demandData: [
+          {
+            productName: "Product1",
+            demand: { "2020": 125, "2021": 150, "2022": 175 }
+          },
+          {
+            productName: "Product2",
+            demand: { "2020": 100, "2021": 120, "2022": 140 }
+          }
+        ]
+      }
+    });
+  }
 }
