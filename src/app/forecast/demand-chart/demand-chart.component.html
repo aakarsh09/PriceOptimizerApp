@@ -1,8 +1,16 @@
-<div style="width: 100%;max-width: 90%; margin: auto;">
+<div style="background-color: darkgray;">
+<div style="width: 100%; max-width: 90%; margin: auto; height: 400px;">
   <canvas baseChart
           [data]="lineChartData"
           [options]="lineChartOptions"
           type="line"
-          style="display: block; width: 100%; height: 1000px;">
+          style="display: block; width: 50%;">
   </canvas>
+</div>
+<div style="height: 300px;"> 
+  <app-ag-grid-table
+    [columnDefs]="columnDefs"
+    [rowData]="filteredRowData">
+  </app-ag-grid-table>
+</div>
 </div>

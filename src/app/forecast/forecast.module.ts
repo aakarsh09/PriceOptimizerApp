@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ForecastRoutingModule } from './forecast-routing.module';
 import { DemandChartComponent } from './demand-chart/demand-chart.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AgGridModule } from '../shared/ag-grid/ag-grid.module';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { NgChartsModule } from 'ng2-charts';
     CommonModule,
     ForecastRoutingModule,
     NgChartsModule,
+    AgGridModule
   ]
 })
 export class ForecastModule { }

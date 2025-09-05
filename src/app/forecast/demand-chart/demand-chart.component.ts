@@ -9,7 +9,8 @@ import { ChartData, ChartOptions } from 'chart.js';
 export class DemandChartComponent {
 
   @Input() demandData: Array<{ productName: string, demand: Record<string, number> }> = [];
-
+  @Input() columnDefs = [];
+  @Input() filteredRowData = [];
   public lineChartData: ChartData<'line'> = {
   labels: ['2020', '2021', '2022'],
   datasets: [
@@ -35,23 +36,22 @@ export class DemandChartComponent {
   responsive: true,
   maintainAspectRatio: false,
   backgroundColor: 'black',
+  layout: {
+  padding: {
+    top: 30,
+    bottom: 60,
+    left: 80,
+    right: 30
+  }
+},
   plugins: {
     legend: {
       labels: {
         color: 'white',
-        usePointStyle: true, 
         pointStyle: 'circle',
       },
       position: 'bottom',
-    },
-    tooltip: {
-      enabled: true,
-      backgroundColor: 'rgba(255,255,255,0.9)',
-      titleColor: 'black',
-      bodyColor: 'black',
-      mode: 'index',
-      intersect: false,
-    },
+    }
   },
   scales: {
     x: {
@@ -63,7 +63,8 @@ export class DemandChartComponent {
       },
       grid: {
         color: 'rgba(255, 255, 255, 0.2)', 
-      }
+      },
+      
     },
     y: {
       ticks: {

@@ -67,6 +67,11 @@ export class ProductListComponent implements OnInit {
         return { ...col, hide: true };
       }
 
+      // Point columns to formatted display fields
+      if (col.field === 'cost_price') col.field = 'display_cost_price';
+      if (col.field === 'selling_price') col.field = 'display_selling_price';
+      if (col.field === 'optimized_price') col.field = 'display_optimized_price';
+
       let flexValue = 1;
       if (col.field === 'description') flexValue = 3;
       else if (col.field === 'name') flexValue = 2;
@@ -81,6 +86,7 @@ export class ProductListComponent implements OnInit {
       };
     });
   }
+
 
   private createActionsColumn(): ColDef {
     return {
@@ -101,12 +107,12 @@ export class ProductListComponent implements OnInit {
   }
 
   private formatCurrencyFields(rows: any[]): any[] {
-    return rows.map(row => ({
-      ...row,
-      cost_price: this.currencyPipe.transform(row.cost_price, 'USD', 'symbol', '1.2-2'),
-      selling_price: this.currencyPipe.transform(row.selling_price, 'USD', 'symbol', '1.2-2'),
-      optimized_price: this.currencyPipe.transform(row.optimized_price, 'USD', 'symbol', '1.2-2'),
-    }));
+  return rows.map(row => ({
+    ...row,
+    display_cost_price: this.currencyPipe.transform(row.cost_price, 'USD', 'symbol', '1.2-2'),
+    display_selling_price: this.currencyPipe.transform(row.selling_price, 'USD', 'symbol', '1.2-2'),
+    display_optimized_price: this.currencyPipe.transform(row.optimized_price, 'USD', 'symbol', '1.2-2'),
+  }));
   }
 
   
@@ -197,6 +203,7 @@ export class ProductListComponent implements OnInit {
   {
       const dialog = this.dialog.open(DemandChartComponent, {
       width: '80%',
+      height:'700px',
       data: {
         demandData: [
           {
