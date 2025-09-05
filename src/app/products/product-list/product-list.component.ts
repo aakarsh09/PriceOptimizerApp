@@ -15,6 +15,7 @@ export class ProductListComponent implements OnInit {
   rowData: any[] = [];
   uniqueCategories:string[]=[];
   filteredRowData: any[] = [];
+  isEditMode:boolean = false;
 
   checkboxColumn: ColDef = {
     headerName: '',
@@ -49,11 +50,19 @@ export class ProductListComponent implements OnInit {
 
         // Map columns and assign widths and styles
         const enhancedColumns = data.columns.map(col => {
+          if (col.field === 'id') {
+            return {
+              ...col,
+              hide: true
+            };
+          }
+
           let flexValue = 1;
 
           if (['description'].includes(col.field)) flexValue = 3;
           else if (['name'].includes(col.field)) flexValue = 2;
           else if (['category'].includes(col.field)) flexValue = 1.5;
+
           return {
             ...col,
             flex: flexValue,
@@ -62,9 +71,27 @@ export class ProductListComponent implements OnInit {
             cellClass: 'left-align'
           };
         });
+
+        const actionsColumn: ColDef = {
+          headerName: 'Actions',
+          field: 'actions',
+          width: 120,
+          pinned: 'right',
+          editable: false,
+          cellRenderer: () => {
+          return `
+            <span class="action-icons" style="cursor:pointer; display:flex; gap:12px; justify-content:center; align-items:center;">
+              <i class="fas fa-edit edit-icon" title="Edit"></i>
+              <i class="fas fa-trash delete-icon" title="Delete"></i>
+              <i class="fas fa-eye view-icon" title="View"></i>
+            </span>
+          `;
+        },
+            onCellClicked: (event) => this.handleActionClick(event)
+        };
         
         // checkbox column addedhere
-        this.columnDefs = [this.checkboxColumn, ...enhancedColumns];
+        this.columnDefs = [this.checkboxColumn, actionsColumn,...enhancedColumns];
         this.rowData = data.rows;
         this.filteredRowData = data.rows;
 
@@ -96,4 +123,48 @@ export class ProductListComponent implements OnInit {
   handleRowClick(event: any) {
     console.log('Row clicked:', event.data);
   }
+
+  deleteProduct(id: number, event: any): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe({
+        next: () => {
+          event.api.applyTransaction({ remove: [event.data] });
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+        },
+      });
+    }
+  }
+
+  openEditProductForm(product: any): void {
+    this.isEditMode = true;
+    const dialogRef = this.dialog.open(ProductFormComponent, {
+      width: '600px',
+      disableClose: true,
+      data: {
+        product: product
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.isEditMode = false;
+      if (result) this.loadProducts();
+    });
+  }
+
+    
+  handleActionClick(event: any): void {
+    console.log(event);
+    const target = event.event.target as HTMLElement;
+
+    if (target.classList.contains('edit-icon')) {
+      this.openEditProductForm(event.data);
+    }
+
+    if (target.classList.contains('delete-icon')) {
+      this.deleteProduct(event.data.id, event);
+    }
+  }
+
 }

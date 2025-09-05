@@ -1,21 +1,25 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductsService } from '../products.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss']
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
 
   productForm: FormGroup;
+  isEditMode: boolean = false;
+  productId!: number;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private productService: ProductsService,
-    private dialogRef: MatDialogRef<ProductFormComponent>) {
+    private dialogRef: MatDialogRef<ProductFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       category: ['', Validators.required],
@@ -27,17 +31,30 @@ export class ProductFormComponent {
     });
   }
 
-  submit() {
-  if (this.productForm.valid) {
-    this.productService.addProduct(this.productForm.value).subscribe({
-      next: (res) => {
-        this.dialogRef.close(true);
-      },
-      error: (err) => console.error('Failed to add product:', err)
-    });
+  ngOnInit(): void {
+    if (this.data?.product) {
+      this.isEditMode = true;
+      this.productId = this.data.product.id;
+      this.productForm.patchValue(this.data.product);
+    }
   }
-}
 
+  // This handles both add and update depending on mode
+  submit(): void {
+    if (this.productForm.invalid) return;
+
+    if (this.isEditMode) {
+      this.productService.updateProduct(this.productId, this.productForm.value).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Failed to update product:', err)
+      });
+    } else {
+      this.productService.addProduct(this.productForm.value).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Failed to add product:', err)
+      });
+    }
+  }
 
   cancelForm() {
     this.dialogRef.close(false);
