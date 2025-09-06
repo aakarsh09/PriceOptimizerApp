@@ -1,19 +1,20 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ForecastService } from './forecast.service';
+import type { ChartDataset } from 'chart.js';
 
 @Component({
   selector: 'app-demand-chart',
   templateUrl: './demand-chart.component.html',
   styleUrls: ['./demand-chart.component.scss']
 })
-export class DemandChartComponent {
-
-  demandData: Array<{ productName: string, demand: Record<string, number> }> = [];
-  columnDefs: any[] = [];
-  filteredRowData: any[] = [];
-
-  public lineChartData!: ChartData<'line'>;
+export class DemandChartComponent implements OnInit {
+  productIds: number[] = [];
+  public lineChartData: ChartData<'line'> = {
+    labels: [],
+    datasets: []
+  };
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -27,16 +28,23 @@ export class DemandChartComponent {
           pointStyle: 'circle',
         },
         position: 'bottom',
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
       }
     },
     scales: {
       x: {
+        type: 'category',
         ticks: { color: 'white', font: { size: 12 } },
         grid: { color: 'rgba(255, 255, 255, 0.2)' }
       },
       y: {
+        type: 'linear',
         ticks: { color: 'white', font: { size: 12 } },
-        grid: { color: 'rgba(255, 255, 255, 0.2)' }
+        grid: { color: 'rgba(255, 255, 255, 0.2)' },
+        beginAtZero: true,
       }
     },
     elements: {
@@ -56,41 +64,92 @@ export class DemandChartComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DemandChartComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      demandData: Array<{ productName: string, demand: Record<string, number> }>,
-      columnDefs: any[],
-      filteredRowData: any[]
-    }
+    @Inject(MAT_DIALOG_DATA) public data: { productIds: number[] },
+    private forecastService: ForecastService
   ) {
-    // Assign injected data to local properties
-    this.demandData = data.demandData;
-    this.columnDefs = data.columnDefs;
-    this.filteredRowData = data.filteredRowData;
-
-    // Generate lineChartData dynamically from demandData
-    this.lineChartData = this.createChartData(this.demandData);
+    this.productIds = data.productIds;
   }
 
-  private createChartData(demandData: Array<{ productName: string, demand: Record<string, number> }>): ChartData<'line'> {
-    if (!demandData.length) return { labels: [], datasets: [] };
+  ngOnInit(): void {
+    this.generateAndLoadChartData();
+  }
 
-    // Extract labels (e.g., years) from the first product’s demand keys
-    const labels = Object.keys(demandData[0].demand);
+  generateAndLoadChartData(): void {
+    this.forecastService.generateForecast(this.productIds).subscribe({
+      next: () => this.loadChartData(),
+      error: (err) => console.error('Error generating forecast data', err)
+    });
+  }
 
-    // Map each product to a dataset with data points and styling
-    const datasets = demandData.map((product, index) => ({
-      label: product.productName,
-      data: labels.map(label => product.demand[label] ?? 0),
+  loadChartData(): void {
+    this.forecastService.getChartData(this.productIds).subscribe({
+      next: (data) => {
+        this.lineChartData = this.formatChartData(data as any);
+        console.log(this.lineChartData);
+      },
+      error: (err) => {
+        console.error('Error loading chart data', err);
+        this.lineChartData = { labels: [], datasets: [] };
+      }
+    });
+  }
+
+  formatChartData(rawData: any): ChartData<'line'> {
+  if (!rawData || !rawData.products || !rawData.years) {
+    return { labels: [], datasets: [] };
+  }
+
+  // Sort products alphabetically to fix order
+  const sortedProducts = [...rawData.products].sort();
+
+  // Create a map from product name to its index in raw data
+  const productIndexMap = rawData.products.reduce((map: Record<string, number>, product: string, index: number) => {
+    map[product] = index;
+    return map;
+  }, {});
+
+  const lastYearIndex = rawData.years.length - 1;
+
+  // Reorder demand and price data according to sortedProducts
+  const demandValues = sortedProducts.map(product => {
+    const idx = productIndexMap[product];
+    return rawData.demand_data[idx][lastYearIndex] || 0;
+  });
+
+  const priceValues = sortedProducts.map(product => {
+    const idx = productIndexMap[product];
+    return rawData.price_data[idx][lastYearIndex] || 0;
+  });
+
+  const datasets = [
+    {
+      label: 'Forecasted Demand',
+      data: demandValues,
+      borderColor: '#00f7c2',  // neon
+      backgroundColor: 'transparent',
       fill: false,
-      borderColor: index === 0 ? 'purple' : '#00f7c2',
-      backgroundColor: index === 0 ? 'purple' : '#00f7c2',
-      tension: 0.3
-    }));
+      tension: 0.3,
+      yAxisID: 'y',
+    },
+    {
+      label: 'Avg Selling Price',
+      data: priceValues,
+      borderColor: '#9b59b6',  // purple
+      backgroundColor: 'transparent',
+      fill: false,
+      tension: 0.3,
+      yAxisID: 'y',
+    }
+  ];
 
-    return { labels, datasets };
-  }
+  return {
+    labels: sortedProducts,
+    datasets,
+  };
+}
 
-  cancelForm() {
+
+  cancelForm(): void {
     this.dialogRef.close(false);
   }
 }
