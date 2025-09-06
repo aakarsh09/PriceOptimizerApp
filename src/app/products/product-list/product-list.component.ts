@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../products.service';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridApi } from 'ag-grid-community';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { CurrencyPipe } from '@angular/common';
@@ -31,6 +31,7 @@ export class ProductListComponent implements OnInit {
     resizable: false,
     suppressMenu: true,
   };
+  private gridApi!: GridApi;
 
   constructor(
     private productService: ProductsService,
@@ -38,9 +39,15 @@ export class ProductListComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
   ) {}
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
+
   ngOnInit(): void {
       this.loadProducts();
   }
+
+  
 
   loadProducts(search: string = '') {
     this.productService.getProducts(search).subscribe({
@@ -139,10 +146,6 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  handleRowClick(event: any) {
-    console.log('Row clicked:', event.data);
-  }
-
   deleteProduct(id: number, event: any): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProduct(id).subscribe({
@@ -194,27 +197,24 @@ export class ProductListComponent implements OnInit {
   {
     if(value)
     {
-      this.openDemandChart();
-      // this.productService.demandForecast();
+      const selectedRows = this.gridApi.getSelectedRows();
+      const productIds = selectedRows.map(row => row.product_id);
+      if (productIds.length === 0) {
+        alert('Please select at least one product');
+        return;
+      }
+      this.openDemandChart(productIds);
+
     }
   }
 
-  openDemandChart()
+  openDemandChart(productIds:number[])
   {
       const dialog = this.dialog.open(DemandChartComponent, {
       width: '80%',
       height:'700px',
       data: {
-        demandData: [
-          {
-            productName: "Product1",
-            demand: { "2020": 125, "2021": 150, "2022": 175 }
-          },
-          {
-            productName: "Product2",
-            demand: { "2020": 100, "2021": 120, "2022": 140 }
-          }
-        ]
+       productIds:productIds
       }
     });
   }

@@ -11,7 +11,7 @@ export class ForecastService {
   constructor(private http: HttpClient) {}
 
   getChartData(productIds: number[] = []) {
-    return this.http.post(this.apiUrl+'chart-data/', { product_ids: [4,2,5] });
+    return this.http.post(this.apiUrl+'chart-data/', { product_ids: productIds });
   }
   
   generateForecast(productIds: number[] = []) {

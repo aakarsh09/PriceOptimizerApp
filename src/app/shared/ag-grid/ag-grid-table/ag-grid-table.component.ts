@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { GridReadyEvent } from 'ag-grid-community';
 
 @Component({
   selector: 'app-ag-grid-table',
@@ -15,7 +16,9 @@ export class AgGridTableComponent {
 
   @Output() rowClicked = new EventEmitter<any>();
   @Output() cellClicked = new EventEmitter<any>();
+  @Output() gridReady = new EventEmitter<GridReadyEvent>();
 
+  
   defaultColDef: ColDef = {
   sortable: true,
   filter: true,
@@ -33,5 +36,9 @@ export class AgGridTableComponent {
 
   onCellClicked(event: any) {
     this.cellClicked.emit(event);
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridReady.emit(params);
   }
 }

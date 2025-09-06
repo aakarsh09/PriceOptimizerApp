@@ -11,6 +11,8 @@
     [rowHeight]="50"
     [headerHeight]="50"
     [editType]="'fullRow'"
+    rowSelection="multiple"
+    (gridReady)="onGridReady($event)"
   >
   </ag-grid-angular>
 </div>

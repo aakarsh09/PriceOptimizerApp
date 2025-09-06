@@ -10,7 +10,8 @@
 <app-ag-grid-table
     [columnDefs]="columnDefs"
     [rowData]="filteredRowData"
-    (rowClicked)="handleRowClick($event)">
+    (gridReady)="onGridReady($event)"
+>
 </app-ag-grid-table>
 
 <div class="d-flex align-items-center justify-content-end" style="font-size: 12px;">
