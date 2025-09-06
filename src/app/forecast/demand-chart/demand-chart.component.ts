@@ -2,7 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ForecastService } from './forecast.service';
-import type { ChartDataset } from 'chart.js';
+import { ProductsService } from 'src/app/products/products.service';
+import { Product, ColumnDef } from 'src/app/products/models/product.model';
+
 
 @Component({
   selector: 'app-demand-chart',
@@ -11,6 +13,9 @@ import type { ChartDataset } from 'chart.js';
 })
 export class DemandChartComponent implements OnInit {
   productIds: number[] = [];
+  filteredRowData: Product[];
+  columnDef: ColumnDef[];
+
   public lineChartData: ChartData<'line'> = {
     labels: [],
     datasets: []
@@ -65,18 +70,49 @@ export class DemandChartComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DemandChartComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { productIds: number[] },
-    private forecastService: ForecastService
+    private forecastService: ForecastService,
+    private productsService: ProductsService
   ) {
     this.productIds = data.productIds;
   }
 
   ngOnInit(): void {
     this.generateAndLoadChartData();
+    this.getProductData();
+  }
+
+  getProductData()
+  {
+     if(!this.productIds || !this.productIds.length) {
+      console.warn('No product IDs available to fetch');
+      return;
+    }
+    this.productsService.filterProductsByIds(this.productIds).subscribe({
+      next:(data)=>{
+          const styledColumns = data.columns.map((col: any) => {
+          if (col.field === 'demand_forecast') {
+            return {
+              ...col,
+              cellStyle: {
+                backgroundColor: '#6FFFE9', 
+                fontWeight:'bold'
+              }
+            };
+          }
+          return col;
+        });
+
+        this.columnDef = styledColumns;
+        this.filteredRowData = data.rows;
+      }
+    })
   }
 
   generateAndLoadChartData(): void {
     this.forecastService.generateForecast(this.productIds).subscribe({
-      next: () => this.loadChartData(),
+      next: () => {
+        this.loadChartData();
+      },
       error: (err) => console.error('Error generating forecast data', err)
     });
   }

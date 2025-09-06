@@ -7,9 +7,6 @@ export interface Product {
   category: string;
   stock_available: number;
   units_sold: number;
-  customer_rating: number;
-  demand_forecast: number;
-  optimized_price: number;
 }
 
 export interface ColumnDef {

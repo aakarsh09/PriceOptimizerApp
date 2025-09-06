@@ -30,6 +30,10 @@ export class ProductsService {
 
   deleteProduct(productId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}${productId}/`);
-    }
+  }
+
+  filterProductsByIds(productIds: number[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}filter_by_ids/`, { product_ids: productIds });
+  }
 
 }

@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { CurrencyPipe } from '@angular/common';
 import { DemandChartComponent } from 'src/app/forecast/demand-chart/demand-chart.component';
+import { Product } from '../models/product.model';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +16,7 @@ import { DemandChartComponent } from 'src/app/forecast/demand-chart/demand-chart
 export class ProductListComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
-  rowData: any[] = [];
+  rowData: Product[] = [];
   uniqueCategories:string[]=[];
   filteredRowData: any[] = [];
   isEditMode:boolean = false;
@@ -47,8 +48,6 @@ export class ProductListComponent implements OnInit {
       this.loadProducts();
   }
 
-  
-
   loadProducts(search: string = '') {
     this.productService.getProducts(search).subscribe({
       next: (data) => this.handleProductData(data),
@@ -73,20 +72,13 @@ export class ProductListComponent implements OnInit {
       if (col.field === 'id') {
         return { ...col, hide: true };
       }
-
       // Point columns to formatted display fields
       if (col.field === 'cost_price') col.field = 'display_cost_price';
       if (col.field === 'selling_price') col.field = 'display_selling_price';
       if (col.field === 'optimized_price') col.field = 'display_optimized_price';
 
-      let flexValue = 1;
-      if (col.field === 'description') flexValue = 3;
-      else if (col.field === 'name') flexValue = 2;
-      else if (col.field === 'category') flexValue = 1.5;
-
       return {
         ...col,
-        flex: flexValue,
         wrapText: true,
         autoHeight: true,
         cellClass: 'left-align'
@@ -105,7 +97,7 @@ export class ProductListComponent implements OnInit {
       cellRenderer: () => `
         <span class="action-icons" style="cursor:pointer; display:flex; gap:12px; justify-content:center; align-items:center;">
           <i class="fas fa-edit edit-icon" title="Edit"></i>
-          <i class="fas fa-trash delete-icon" title="Delete"></i>
+          <i class="fas fa-trash delete-icon" style="color: red;" title="Delete"></i>
           <i class="fas fa-eye view-icon" title="View"></i>
         </span>
       `,
@@ -214,7 +206,7 @@ export class ProductListComponent implements OnInit {
       width: '80%',
       height:'700px',
       data: {
-       productIds:productIds
+       productIds:productIds,
       }
     });
   }
